@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        {% load static %}
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+        <script
+            src="{% static 'admin/js/vendor/jquery/jquery.min.js' %}"></script>
+        <link rel="stylesheet" href="{% static 'css/room.css' %}">
+        <input type="hidden" value="{{username}}" id="id">
+    </head>
+    <body>
+        <a href="/">back</a>
+        <ul id="msgs"></ul>
+        <div>
+            <input name="msg" type="text">
+            <button id="sender">send</button>
+        </div>
+        <script src="{% static 'js/room.js' %}"></script>
+    </body>
+</html>

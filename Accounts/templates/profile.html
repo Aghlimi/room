@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+      img{
+        height: 250px;
+      }
+    </style>
+    <script src="{% static 'admin/js/vendor/jquery/jquery.min.js' %}"></script>
+</head>
+<body>
+  <center>
+
+  
+    <div>
+        <img src="">
+        <h1>{{username}}</h1>
+        {% if username != me %}
+          <a href="/chat/{{username}}">chat</a>
+        {% endif %}
+        <h4></h4>
+        <p id="sex"></p>
+        <p id="email"></p>
+        <p id="date"></p>
+    </div>
+    <br>
+    <hr>
+    {% for i in posts %}
+      <h3>{{i.text}}</h3>
+      {% if i.image %}
+        <img src="{{i.image.url}}">
+      {% endif %}
+      
+      <a href="{% url 'postpage' i.id %}">show post</a>
+    {% endfor %}
+  </center>
+    <script src="{% static 'js/profile.js' %}"></script>
+</body>
+</html>

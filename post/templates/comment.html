@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        {% load static %}
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+        <script
+            src="{% static 'admin/js/vendor/jquery/jquery.min.js' %}"></script>
+        <style>
+        img {
+            width: 100px;
+            height: 100px;
+        }
+    </style>
+    </head>
+
+    <body>
+        <div>
+            <h2>{{com.creater}}</h2>
+            <h3>{{com.text}}</h3>
+            <p>{{com.date}}</p>
+            <button
+                onclick="like(this,`{% url 'like' 2 com.id %}`)">likes:{{com.count_likes}}</button>
+            {% if com.image %}
+            <img src="{{com.image.url}}">
+            {% endif %}
+            {% if me == post.creater.username or me == com.creater.username %}
+            <button onclick="del(`{% url 'delete' 2 com.id %}`)">delete
+                comment</button>
+            {% endif %}
+        </div>
+        <br><hr>
+        <div>
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{form}}
+                <button type="submit">comment</button>
+            </form>
+        </div>
+        <br><hr>
+        {% for com in coms %}
+        <div>
+            <h2>{{com.creater}}</h2>
+            <h3>{{com.text}}</h3>
+            {% if com.image %}
+            <img src="{{com.image.url}}">
+            {% endif %}
+
+            <p>{{com.date}}</p>
+
+            <button
+                onclick="like(this,`{% url 'like' 3 com.id %}`)">likes:{{com.count_likes}}</button>
+            {% if me == post.creater.username or me == com.creater.username %}
+            <button onclick="del(`{% url 'delete' 3 com.id %}`)">delete
+                comment</button>
+            {% endif %}
+        </div>
+        {% endfor %}
+        <script>
+        function del(url){
+          $.ajax({
+              url:url,
+              success:function(result){
+                  location.reload()
+              }
+          });
+      }
+      </script>
+        <script src="{% static 'script.js' %}"></script>
+
+    </body>
+
+</html>

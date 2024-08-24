@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    {% load static %}
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="{% static 'admin/js/vendor/jquery/jquery.min.js' %}"></script>
+    <style>
+    img {
+      width: 100px;
+      height: 100px;
+    }
+  </style>
+    <script>
+    function del(url){
+      $.ajax({
+          url:url,
+          success:function(result){
+              location.reload()
+          }
+      });
+    }
+   
+  </script>
+  </head>
+
+  <body>
+    <a href="{% url 'profile' post.creater.username %}">
+      <h1>{{post.creater.username }}</h1>
+    </a>
+    <p>{{ post.text }}</p>
+    <p>{{ post.date }}</p>
+    {% if post.image %}
+    <img src="{{ post.image.url }}" />
+    {% endif %}
+    <button
+      onclick="like(this,`{% url 'like' 1 post.id %}`)">likes:{{post.count_likes}}</button>
+    {% if me == post.creater.username %}
+    <a href="{% url 'delete' 1 post.id %}">delete post</a>
+    {% endif %}
+    <br />
+    <hr />
+    <div>
+      <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form }}
+        <button type="submit">comment</button>
+      </form>
+    </div>
+    <br />
+    <hr />
+    {% for com in coms %}
+    <div>
+      <a href="{% url 'profile' com.creater.username %}">
+        <h1>{{ com.creater.username }}</h1>
+      </a>
+
+      <h3>{{ com.text }}</h3>
+      {% if com.image %}
+      <img src="{{ com.image.url }}" />
+      {% endif %}
+      <p>{{ com.date }}</p>
+      <button
+        onclick="like(this,`{% url 'like' 2 com.id %}`)">likes:{{com.count_likes}}</button>
+      <a href="{% url 'comment' com.post.id com.id %}">show reacts</a>
+      {% if me == post.creater.username or me == com.creater.username %}
+      <button onclick="del(`{% url 'delete' 2 com.id %}`)">delete
+        comment</button>{% endif %}
+    </div>
+    {% endfor %}
+    <script src="{% static 'script.js' %}"></script>
+  </body>
+</html>
